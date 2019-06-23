@@ -6,18 +6,16 @@
     ref="editProfileForm"
     class="edit-form"
   >
-    <el-form-item
-      label="New Email"
-      prop="email"
-    >
-      <el-input
-        class="input"
-        placeholder="Please input your new email"
-        v-model="editProfileForm.email"
-      />
+    <el-form-item label="New Email" prop="email">
+      <el-input class="input" placeholder="Your new email" v-model="editProfileForm.email"/>
     </el-form-item>
     <el-form-item label="New Password" prop="password">
-      <el-input type="password" v-model="editProfileForm.password" autocomplete="off"></el-input>
+      <el-input
+        placeholder="Your new password"
+        type="password"
+        v-model="editProfileForm.password"
+        autocomplete="off"
+      ></el-input>
     </el-form-item>
     <el-form-item label="Confirm Password" prop="confirmPassword">
       <el-input type="password" v-model="editProfileForm.confirmPassword" autocomplete="off"></el-input>
@@ -34,8 +32,6 @@ import { Notification } from "element-ui";
 export default {
   data() {
     const confirmPassValidator = (rule, value, callback) => {
-      if (value === "")
-        return callback(new Error("Please confirm your new password"));
       if (value !== this.editProfileForm.password)
         return callback(new Error("Passwords do not match"));
       callback();
@@ -44,17 +40,43 @@ export default {
     return {
       editProfileForm: {
         email: "test@email.com",
-        password: "",
+        password: "12345678",
         confirmPassword: ""
       },
       rules: {
         email: [
-          { type: 'email', message: 'Please input a correct email address', trigger: ['blur', 'change'] }
+          {
+            required: true,
+            message: "This field is required",
+            trigger: "blur"
+          },
+          {
+            type: "email",
+            message: "Please input a correct email address",
+            trigger: ["blur", "change"]
+          }
         ],
         password: [
-          { min: 6, max: 10, message: 'Password should be between 6 and 10 characters', trigger: 'change'}
+          {
+            required: true,
+            message: "This field is required",
+            trigger: "blur"
+          },
+          {
+            min: 6,
+            max: 10,
+            message: "Password should be between 6 and 10 characters",
+            trigger: "change"
+          }
         ],
-        confirmPassword: [{ validator: confirmPassValidator, trigger: ["blur", "change"] }]
+        confirmPassword: [
+          {
+            required: true,
+            message: "Please confirm your new password",
+            trigger: "blur"
+          },
+          { validator: confirmPassValidator, trigger: ["blur", "change"] }
+        ]
       }
     };
   },
